@@ -1,0 +1,59 @@
+# This .gitignore file is for Unity projects
+
+# Unity generated folders
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]serSettings/
+
+# Visual Studio / Rider / JetBrains
+*.sln
+*.csproj
+*.user
+*.userprefs
+*.pidb
+*.suo
+*.sln.docstates
+.idea/
+.vscode/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+*.swp
+
+# Unity Asset Store
+[Aa]ssets/AssetStoreTools*
+
+# Builds
+*.apk
+*.aab
+*.xcodeproj
+*.xcworkspace
+
+# Ignore crash reports
+crashlytics-build.log
+*.stacktrace
+
+# Ignore other files
+*.pdb
+*.mdb
+*.opendb
+*.ilk
+*.sdf
+*.suo
+*.userprefs
+*.csproj.user
+*.unityproj
+*.tmp
+
+# Ignore cache files
+*.bak
+*.swp
+*.tmp
+
+# Ignore log files
+*.log
