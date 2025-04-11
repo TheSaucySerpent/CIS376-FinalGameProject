@@ -20,7 +20,7 @@ public class Weapon : MonoBehaviour
     // Bullet
     public GameObject bulletPrefab;
     public Transform bulletSpawn;
-    public float bulletVeloocity = 30;
+    public float bulletVelocity = 30;
     public float bulletPrefabLifetime = 3f;
 
     // Shooting Modes
@@ -66,8 +66,8 @@ public class Weapon : MonoBehaviour
         // point the bullet in the direction of the shooting direction
         bullet.transform.forward = shootingDirection;
 
-        // shoot the bullet forward (blue axis direction)
-        bullet.GetComponent<Rigidbody>().AddForce(bulletSpawn.forward * bulletVeloocity, ForceMode.Impulse);
+        // shoot the bullet in the shooting direction, applying spread
+        bullet.GetComponent<Rigidbody>().AddForce(shootingDirection * bulletVelocity, ForceMode.Impulse);
 
         // destroy the bullet after a certain amount of time
         StartCoroutine(DestroyBulletAfterTime(bullet, bulletPrefabLifetime));
