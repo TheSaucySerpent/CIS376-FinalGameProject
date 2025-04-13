@@ -40,6 +40,9 @@ public class Bullet : MonoBehaviour
             Quaternion.LookRotation(contact.normal) // rotation when we hit the target
         );
 
+        // scale down the size of the bullet hole
+        hole.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+
         // make the hole a child of what was hit
         hole.transform.SetParent(objectHit.gameObject.transform);
     }  

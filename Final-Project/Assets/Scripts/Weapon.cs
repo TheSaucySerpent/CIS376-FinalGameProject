@@ -2,9 +2,7 @@ using UnityEngine;
 using System.Collections; // need for using IEnumerator
 
 public class Weapon : MonoBehaviour
-{
-    public Camera playerCamera;
-    
+{   
     // Shooting
     public bool isShooting, readyToShoot;
     private bool allowReset = true;
@@ -23,6 +21,12 @@ public class Weapon : MonoBehaviour
     public float bulletVelocity = 30;
     public float bulletPrefabLifetime = 3f;
 
+    // Muzzle Effect
+    public GameObject muzzleEffect;
+
+    // Reference to the animator
+    private Animator animator;
+
     // Shooting Modes
     public enum ShootingMode {
         Single,
@@ -34,6 +38,7 @@ public class Weapon : MonoBehaviour
     private void Awake() {
         readyToShoot = true; // the weapon is ready to shoot
         burstBulletsLeft = bulletsPerBurst; // the current burst is equal to the number of bullets per burst
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -55,6 +60,12 @@ public class Weapon : MonoBehaviour
     }
 
     private void FireWeapon() {
+
+        // activate the muzzle effect
+        muzzleEffect.GetComponent<ParticleSystem>().Play();
+        animator.SetTrigger("RECOIL"); // trigger the recoil animation
+        SoundManager.Instance.shootingSoundM1911.Play(); // play the shooting sound
+
         readyToShoot = false; // don't allow shooting unless shot is done
 
         Vector3 shootingDirection = CalculateDirectionandSpread().normalized;
@@ -92,7 +103,7 @@ public class Weapon : MonoBehaviour
 
     public Vector3 CalculateDirectionandSpread()  {
         // Shooting from the middle of the screen to check where we are pointing
-        Ray ray = playerCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
 
         Vector3 targetPoint;
