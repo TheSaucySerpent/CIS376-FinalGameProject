@@ -27,6 +27,11 @@ public class Weapon : MonoBehaviour
     // Reference to the animator
     private Animator animator;
 
+    // Loading the Weapon
+    public float reloadTime;
+    public int magazineSize, bulletsLeft;
+    public bool isReloading;
+
     // Shooting Modes
     public enum ShootingMode {
         Single,
@@ -39,10 +44,16 @@ public class Weapon : MonoBehaviour
         readyToShoot = true; // the weapon is ready to shoot
         burstBulletsLeft = bulletsPerBurst; // the current burst is equal to the number of bullets per burst
         animator = GetComponent<Animator>();
+
+        bulletsLeft = magazineSize; // the current bullets left is equal to the magazine size
     }
 
     // Update is called once per frame
     void Update() {
+        if (bulletsLeft == 0 && isShooting) {
+            SoundManager.Instance.emptyMagazineSoundM1911.Play(); // play the empty magazine sound
+        }
+
         if (currentShootingMode == ShootingMode.Auto) {
             // Holding down the mouse button will shoot the weapon
             isShooting = Input.GetKey(KeyCode.Mouse0); // get key = true if held
@@ -53,13 +64,32 @@ public class Weapon : MonoBehaviour
             isShooting = Input.GetKeyDown(KeyCode.Mouse0); // get key = true if pressed down once
         }
 
-        if (readyToShoot && isShooting) {
+        if (readyToShoot && isShooting && bulletsLeft > 0) {
             burstBulletsLeft = bulletsPerBurst;
             FireWeapon();
+        }
+
+        // Allow reloading only if weapon is not full on ammo and already reloading (manual reloading)
+        if (Input.GetKeyDown(KeyCode.R) && bulletsLeft < magazineSize && !isReloading) {
+            Reload();
+        }
+        // automatic reloading
+        // else if (readyToShoot && !isShooting && !isReloading && bulletsLeft == 0) {
+        //     Reload();
+        // }
+
+        // Update the UI based on the amount of bullets left
+        if (AmmoManager.Instance.ammoDisplay != null) {
+            // the video uses this, which shows bursts left
+            // ammoDisplay.text = $"{bulletsLeft/bulletsPerBurst}/{magazineSize/bulletsPerBurst}";
+
+            // typically shooters just show the number of bullets left
+            AmmoManager.Instance.ammoDisplay.text = $"{bulletsLeft}/{magazineSize}";
         }
     }
 
     private void FireWeapon() {
+        bulletsLeft--; // decrement the number of bullets left
 
         // activate the muzzle effect
         muzzleEffect.GetComponent<ParticleSystem>().Play();
@@ -94,6 +124,18 @@ public class Weapon : MonoBehaviour
             burstBulletsLeft--;
             Invoke("FireWeapon", shootingDelay);
         }
+    }
+
+    //
+    private void Reload() {
+        isReloading = true;
+        SoundManager.Instance.reloadingSoundM1911.Play(); // play the reload sound
+        Invoke("ReloadCompleted", reloadTime);
+    }
+
+    private void ReloadCompleted() {
+        bulletsLeft = magazineSize; // set the bullets left back to the magazine size
+        isReloading = false; // we are done reloading
     }
 
     private void ResetShot() {
