@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections; // need for using IEnumerator
-
 public class Weapon : MonoBehaviour
 {   
     // Shooting
@@ -32,6 +31,15 @@ public class Weapon : MonoBehaviour
     public int magazineSize, bulletsLeft;
     public bool isReloading;
 
+    // Different kinds of weapons
+    public enum WeaponModel {
+        PistolM1911,
+        RifleM4_8,
+    }
+
+    // the current weapon model
+    public WeaponModel thisWeaponModel;
+
     // Shooting Modes
     public enum ShootingMode {
         Single,
@@ -51,7 +59,8 @@ public class Weapon : MonoBehaviour
     // Update is called once per frame
     void Update() {
         if (bulletsLeft == 0 && isShooting) {
-            SoundManager.Instance.emptyMagazineSoundM1911.Play(); // play the empty magazine sound
+            // play the empty magazine sound (same for all weapons)
+            SoundManager.Instance.ShootingChannel.PlayOneShot(SoundManager.Instance.emptyMagazine);
         }
 
         if (currentShootingMode == ShootingMode.Auto) {
@@ -94,7 +103,10 @@ public class Weapon : MonoBehaviour
         // activate the muzzle effect
         muzzleEffect.GetComponent<ParticleSystem>().Play();
         animator.SetTrigger("RECOIL"); // trigger the recoil animation
-        SoundManager.Instance.shootingSoundM1911.Play(); // play the shooting sound
+        // SoundManager.Instance.shootingSoundM1911.Play(); // play the shooting sound
+
+        // play the appropriate shooting sound
+        SoundManager.Instance.PlayShootingSound(thisWeaponModel);
 
         readyToShoot = false; // don't allow shooting unless shot is done
 
@@ -129,7 +141,11 @@ public class Weapon : MonoBehaviour
     //
     private void Reload() {
         isReloading = true;
-        SoundManager.Instance.reloadingSoundM1911.Play(); // play the reload sound
+        // SoundManager.Instance.reloadingSoundM1911.Play(); // play the reload sound
+
+        // play the appropriate reloading sound for the weapon
+        SoundManager.Instance.PlayReloadingSound(thisWeaponModel);
+        animator.SetTrigger("RELOAD"); // trigger the reload animation
         Invoke("ReloadCompleted", reloadTime);
     }
 
