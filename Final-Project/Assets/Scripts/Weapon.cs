@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections; // need for using IEnumerator
 public class Weapon : MonoBehaviour
 {   
+    // Is this weapon active?
+    public bool isActiveWeapon;
+
     // Shooting
     public bool isShooting, readyToShoot;
     private bool allowReset = true;
@@ -31,6 +34,9 @@ public class Weapon : MonoBehaviour
     public int magazineSize, bulletsLeft;
     public bool isReloading;
 
+    public Vector3 spawnPosition;
+    public Vector3 spawnRotation;
+
     // Different kinds of weapons
     public enum WeaponModel {
         PistolM1911,
@@ -58,42 +64,45 @@ public class Weapon : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        if (bulletsLeft == 0 && isShooting) {
-            // play the empty magazine sound (same for all weapons)
-            SoundManager.Instance.ShootingChannel.PlayOneShot(SoundManager.Instance.emptyMagazine);
-        }
+        // Don't do anything if the weapon is not active
+        if (isActiveWeapon) {
+            if (bulletsLeft == 0 && isShooting) {
+                // play the empty magazine sound (same for all weapons)
+                SoundManager.Instance.ShootingChannel.PlayOneShot(SoundManager.Instance.emptyMagazine);
+            }
 
-        if (currentShootingMode == ShootingMode.Auto) {
-            // Holding down the mouse button will shoot the weapon
-            isShooting = Input.GetKey(KeyCode.Mouse0); // get key = true if held
-        }
-        else if (currentShootingMode == ShootingMode.Single || 
-            currentShootingMode == ShootingMode.Burst) {
-            // Clicking the mouse button will shoot the weapon
-            isShooting = Input.GetKeyDown(KeyCode.Mouse0); // get key = true if pressed down once
-        }
+            if (currentShootingMode == ShootingMode.Auto) {
+                // Holding down the mouse button will shoot the weapon
+                isShooting = Input.GetKey(KeyCode.Mouse0); // get key = true if held
+            }
+            else if (currentShootingMode == ShootingMode.Single || 
+                currentShootingMode == ShootingMode.Burst) {
+                // Clicking the mouse button will shoot the weapon
+                isShooting = Input.GetKeyDown(KeyCode.Mouse0); // get key = true if pressed down once
+            }
 
-        if (readyToShoot && isShooting && bulletsLeft > 0) {
-            burstBulletsLeft = bulletsPerBurst;
-            FireWeapon();
-        }
+            if (readyToShoot && isShooting && bulletsLeft > 0) {
+                burstBulletsLeft = bulletsPerBurst;
+                FireWeapon();
+            }
 
-        // Allow reloading only if weapon is not full on ammo and already reloading (manual reloading)
-        if (Input.GetKeyDown(KeyCode.R) && bulletsLeft < magazineSize && !isReloading) {
-            Reload();
-        }
-        // automatic reloading
-        // else if (readyToShoot && !isShooting && !isReloading && bulletsLeft == 0) {
-        //     Reload();
-        // }
+            // Allow reloading only if weapon is not full on ammo and already reloading (manual reloading)
+            if (Input.GetKeyDown(KeyCode.R) && bulletsLeft < magazineSize && !isReloading) {
+                Reload();
+            }
+            // automatic reloading
+            // else if (readyToShoot && !isShooting && !isReloading && bulletsLeft == 0) {
+            //     Reload();
+            // }
 
-        // Update the UI based on the amount of bullets left
-        if (AmmoManager.Instance.ammoDisplay != null) {
-            // the video uses this, which shows bursts left
-            // ammoDisplay.text = $"{bulletsLeft/bulletsPerBurst}/{magazineSize/bulletsPerBurst}";
+            // Update the UI based on the amount of bullets left
+            if (AmmoManager.Instance.ammoDisplay != null) {
+                // the video uses this, which shows bursts left
+                // ammoDisplay.text = $"{bulletsLeft/bulletsPerBurst}/{magazineSize/bulletsPerBurst}";
 
-            // typically shooters just show the number of bullets left
-            AmmoManager.Instance.ammoDisplay.text = $"{bulletsLeft}/{magazineSize}";
+                // typically shooters just show the number of bullets left
+                AmmoManager.Instance.ammoDisplay.text = $"{bulletsLeft}/{magazineSize}";
+            }
         }
     }
 
