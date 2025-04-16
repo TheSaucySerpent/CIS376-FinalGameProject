@@ -5262,6 +5262,7 @@ GameObject:
   - component: {fileID: 3913295934316792671}
   - component: {fileID: 1674425474149545882}
   - component: {fileID: 2669828954348499076}
+  - component: {fileID: 9056688311238998875}
   m_Layer: 0
   m_Name: M4_8
   m_TagString: Untagged
@@ -5355,6 +5356,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7da3e3fbe123614b95033a706992ade, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isActiveWeapon: 0
   isShooting: 0
   readyToShoot: 0
   shootingDelay: 0.15
@@ -5382,7 +5384,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9021836628325151004}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 6c705f030e2f0394a90c9736b91935d7, type: 2}
   m_CullingMode: 0
@@ -5417,3 +5419,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0597421, y: 0.17664653, z: 0.7236116}
   m_Center: {x: -0.004013397, y: 0.008912884, z: 0.023460403}
+--- !u!114 &9056688311238998875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9021836628325151004}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []

@@ -27,7 +27,7 @@ public class Weapon : MonoBehaviour
     public GameObject muzzleEffect;
 
     // Reference to the animator
-    private Animator animator;
+    internal Animator animator;
 
     // Loading the Weapon
     public float reloadTime;
@@ -66,6 +66,9 @@ public class Weapon : MonoBehaviour
     void Update() {
         // Don't do anything if the weapon is not active
         if (isActiveWeapon) {
+            // prevent an active weapon from ever being outlined
+            GetComponent<Outline>().enabled = false;
+
             if (bulletsLeft == 0 && isShooting) {
                 // play the empty magazine sound (same for all weapons)
                 SoundManager.Instance.ShootingChannel.PlayOneShot(SoundManager.Instance.emptyMagazine);
