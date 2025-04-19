@@ -97,15 +97,6 @@ public class Weapon : MonoBehaviour
             // else if (readyToShoot && !isShooting && !isReloading && bulletsLeft == 0) {
             //     Reload();
             // }
-
-            // Update the UI based on the amount of bullets left
-            if (AmmoManager.Instance.ammoDisplay != null) {
-                // the video uses this, which shows bursts left
-                // ammoDisplay.text = $"{bulletsLeft/bulletsPerBurst}/{magazineSize/bulletsPerBurst}";
-
-                // typically shooters just show the number of bullets left
-                AmmoManager.Instance.ammoDisplay.text = $"{bulletsLeft}/{magazineSize}";
-            }
         }
     }
 
