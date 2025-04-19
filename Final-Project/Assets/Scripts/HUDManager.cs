@@ -67,10 +67,9 @@ public class HUDManager : MonoBehaviour
     // instantiate the proper weapon sprite
     switch (model) {
         case Weapon.WeaponModel.PistolM1911:
-            // return Instantiate(Resources.Load<GameObject>("PistolM1911")).GetComponent<SpriteRenderer>().sprite;
             return Resources.Load<Sprite>("PistolM1911");
         case Weapon.WeaponModel.RifleM4_8:
-            return Instantiate(Resources.Load<GameObject>("RifleM4_8")).GetComponent<SpriteRenderer>().sprite;
+            return Resources.Load<Sprite>("RifleM4_8");
         default:
             return null;
     }
@@ -80,9 +79,9 @@ public class HUDManager : MonoBehaviour
     // instantiate the proper ammo sprite
     switch (model) {
         case Weapon.WeaponModel.PistolM1911:
-            return Instantiate(Resources.Load<GameObject>("Pistol_Ammo")).GetComponent<SpriteRenderer>().sprite;
+            return Resources.Load<Sprite>("Pistol_Ammo");
         case Weapon.WeaponModel.RifleM4_8:
-            return Instantiate(Resources.Load<GameObject>("Rifle_Ammo")).GetComponent<SpriteRenderer>().sprite;
+            return Resources.Load<Sprite>("Rifle_Ammo");
         default:
             return null;
     }
