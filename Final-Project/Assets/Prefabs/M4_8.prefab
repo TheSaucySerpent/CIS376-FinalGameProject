@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 255545893167970039}
   - component: {fileID: 9052156281428239635}
   - component: {fileID: 2955378383725901474}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Mag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 6473469317244228389}
   - component: {fileID: 108498407203918685}
   - component: {fileID: 1637393740509854631}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Bolt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 763432379357143585}
   - component: {fileID: 2482260236486881548}
   - component: {fileID: 6610676386117810777}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Sight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -269,7 +269,7 @@ GameObject:
   - component: {fileID: 6953787042716397955}
   - component: {fileID: 4874693845323043912}
   - component: {fileID: 8765786943173438806}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -355,7 +355,7 @@ GameObject:
   - component: {fileID: 6745558385752459307}
   - component: {fileID: 2959521845272037772}
   - component: {fileID: 1231441440212343022}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Rear_Sight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -441,7 +441,7 @@ GameObject:
   - component: {fileID: 8659774545627897752}
   - component: {fileID: 7114443195283269180}
   - component: {fileID: 8083227578336450341}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: MuzzleFlashEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5225,7 +5225,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2469367310718045183}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: BulletSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5263,7 +5263,7 @@ GameObject:
   - component: {fileID: 1674425474149545882}
   - component: {fileID: 2669828954348499076}
   - component: {fileID: 9056688311238998875}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: M4_8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5357,6 +5357,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActiveWeapon: 0
+  weaponDamage: 25
   isShooting: 0
   readyToShoot: 0
   shootingDelay: 0.15

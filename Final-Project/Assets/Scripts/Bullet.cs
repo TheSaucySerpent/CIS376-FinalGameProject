@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    // the damage the bullet will deal
+    public int bulletDamage;
+
     private void OnCollisionEnter(Collision objectHit) {
         // destroy the bullet when it collides with a target
         if (objectHit.gameObject.CompareTag("Target")) {
@@ -25,6 +28,17 @@ public class Bullet : MonoBehaviour
 
             // We will not destory the bullet on impact, it will get destroyed
             // according to its own lifetime (allows bullet to pass through the bottle)
+        }
+
+        // make the zombie take damage if we hit it
+        if (objectHit.gameObject.CompareTag("Zombie")) {
+            print("hit a zombie"); 
+            
+            // make the zombie take damage
+            objectHit.gameObject.GetComponent<Zombie>().TakeDamage(bulletDamage);
+
+            // destory the bullet after hitting the zombie
+            Destroy(gameObject);
         }
     }
 

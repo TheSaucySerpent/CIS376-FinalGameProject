@@ -5,6 +5,7 @@ public class Weapon : MonoBehaviour
 {   
     // Is this weapon active?
     public bool isActiveWeapon;
+    public int weaponDamage; // the damage bullets from this weapon will deal
 
     [Header("Shooting")]
     // Shooting
@@ -78,10 +79,26 @@ public class Weapon : MonoBehaviour
         spreadIntensity = hipSpreadIntensity; // start with hip spread
     }
 
+    // helper method to set the layer of the weapon recursively
+    private void SetLayerRecursively(GameObject obj, int newLayer)
+    {
+        if (obj == null) return;
+
+        obj.layer = newLayer;
+
+        foreach (Transform child in obj.transform)
+        {
+            SetLayerRecursively(child.gameObject, newLayer);
+        }
+    }
+
     // Update is called once per frame
     void Update() {
         // Don't do anything if the weapon is not active
         if (isActiveWeapon) {
+            // only set weapon layer to WeaponRender if the weapon is active
+            SetLayerRecursively(gameObject, LayerMask.NameToLayer("WeaponRender"));
+
             // check if the weapon should enter ADS mode
             // don't want to trigger animation each the frame
             if (Input.GetMouseButtonDown(1))
@@ -124,6 +141,11 @@ public class Weapon : MonoBehaviour
             // else if (readyToShoot && !isShooting && !isReloading && bulletsLeft == 0) {
             //     Reload();
             // }
+        }
+        else
+        {
+            // set weapon layer to Default if the weapon is not active
+            SetLayerRecursively(gameObject, LayerMask.NameToLayer("Default"));
         }
     }
 
@@ -174,6 +196,9 @@ public class Weapon : MonoBehaviour
         // instantiate a bullet rather than using a ray cast
         // create a bullet at the bullet spawn point with default rotation
         GameObject bullet = Instantiate(bulletPrefab, bulletSpawn.position, Quaternion.identity);
+
+        // reach into the bullet script and set the damage it should do 
+        bullet.GetComponent<Bullet>().bulletDamage = weaponDamage;
 
         // point the bullet in the direction of the shooting direction
         bullet.transform.forward = shootingDirection;
