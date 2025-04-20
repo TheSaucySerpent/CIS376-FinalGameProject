@@ -30,14 +30,13 @@ public class Bullet : MonoBehaviour
             // according to its own lifetime (allows bullet to pass through the bottle)
         }
 
-        // make the zombie take damage if we hit it
-        if (objectHit.gameObject.CompareTag("Zombie")) {
-            print("hit a zombie"); 
+        // make the enemy take damage if we hit it
+        if (objectHit.gameObject.CompareTag("Enemy")) {
             
-            // make the zombie take damage
-            objectHit.gameObject.GetComponent<Zombie>().TakeDamage(bulletDamage);
+            // make the enemy take damage
+            objectHit.gameObject.GetComponent<Enemy>().TakeDamage(bulletDamage);
 
-            // destory the bullet after hitting the zombie
+            // destory the bullet after hitting the enemy
             Destroy(gameObject);
         }
     }
