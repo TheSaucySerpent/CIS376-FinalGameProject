@@ -5363,6 +5363,8 @@ MonoBehaviour:
   bulletsPerBurst: 0
   burstBulletsLeft: 0
   spreadIntensity: 0.1
+  hipSpreadIntensity: 0.5
+  adsSpreadIntensity: 0.1
   bulletPrefab: {fileID: 8113424238562159743, guid: a6c0962b937154047a8fe8ea93bb098c, type: 3}
   bulletSpawn: {fileID: 2469367310718045183}
   bulletVelocity: 700

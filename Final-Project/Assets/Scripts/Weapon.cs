@@ -1,41 +1,55 @@
 using UnityEngine;
-using System.Collections; // need for using IEnumerator
+using System.Collections;
+using Unity.VisualScripting; // need for using IEnumerator
 public class Weapon : MonoBehaviour
 {   
     // Is this weapon active?
     public bool isActiveWeapon;
 
+    [Header("Shooting")]
     // Shooting
     public bool isShooting, readyToShoot;
     private bool allowReset = true;
     public float shootingDelay = 2f;
 
+    [Header("Burst")]
     // Burst shooting mode
     public int bulletsPerBurst = 3;
     public int burstBulletsLeft;
     
-    // Spread
+    [Header("Spread")]
+    // Spread 
     public float spreadIntensity;
+    public float hipSpreadIntensity; // hip spread
+    public float adsSpreadIntensity; // ads spread
 
+    [Header("Bullet")]
     // Bullet
     public GameObject bulletPrefab;
     public Transform bulletSpawn;
     public float bulletVelocity = 30;
     public float bulletPrefabLifetime = 3f;
 
+    [Header("Muzzle Effect")]
     // Muzzle Effect
     public GameObject muzzleEffect;
 
     // Reference to the animator
     internal Animator animator;
 
+    [Header("Reloading")]
     // Loading the Weapon
     public float reloadTime;
     public int magazineSize, bulletsLeft;
     public bool isReloading;
 
+    [Header("Weapon Spawning")]
     public Vector3 spawnPosition;
     public Vector3 spawnRotation;
+
+    [Header("ADS")]
+    // boolean to prevent undesired animations from being queued when in ADS
+    bool isADS;
 
     // Different kinds of weapons
     public enum WeaponModel {
@@ -60,12 +74,25 @@ public class Weapon : MonoBehaviour
         animator = GetComponent<Animator>();
 
         bulletsLeft = magazineSize; // the current bullets left is equal to the magazine size
+
+        spreadIntensity = hipSpreadIntensity; // start with hip spread
     }
 
     // Update is called once per frame
     void Update() {
         // Don't do anything if the weapon is not active
         if (isActiveWeapon) {
+            // check if the weapon should enter ADS mode
+            // don't want to trigger animation each the frame
+            if (Input.GetMouseButtonDown(1))
+            {
+                EnterADS();
+            }
+            if (Input.GetMouseButtonUp(1))
+            {
+                ExitADS();
+            }
+
             // prevent an active weapon from ever being outlined
             GetComponent<Outline>().enabled = false;
 
@@ -100,12 +127,41 @@ public class Weapon : MonoBehaviour
         }
     }
 
+    private void EnterADS()
+    {
+        animator.SetTrigger("enterADS");
+        isADS = true;
+        spreadIntensity = adsSpreadIntensity; // set the spread to the ads spread
+
+        // for if we want to enable/disable middle dot on ADS
+        // HUDManager.Instance.middleDot.SetActive(false);
+    }
+
+    private void ExitADS()
+    {
+        animator.SetTrigger("exitADS");
+        isADS = false;
+        spreadIntensity = hipSpreadIntensity; // set the spread to the hip spread
+
+        // for if we want to enable/disable middle dot on hip fire
+        // HUDManager.Instance.middleDot.SetActive(true);
+    }
+
     private void FireWeapon() {
         bulletsLeft--; // decrement the number of bullets left
 
         // activate the muzzle effect
         muzzleEffect.GetComponent<ParticleSystem>().Play();
-        animator.SetTrigger("RECOIL"); // trigger the recoil animation
+
+        if (isADS) 
+        {
+            animator.SetTrigger("RECOIL_ADS"); // trigger the recoil animation (ADS)
+        }
+        else 
+        {
+            animator.SetTrigger("RECOIL"); // trigger the recoil animation (hip fire)
+        }
+        
         // SoundManager.Instance.shootingSoundM1911.Play(); // play the shooting sound
 
         // play the appropriate shooting sound
@@ -141,14 +197,21 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    //
     private void Reload() {
         isReloading = true;
         // SoundManager.Instance.reloadingSoundM1911.Play(); // play the reload sound
 
         // play the appropriate reloading sound for the weapon
         SoundManager.Instance.PlayReloadingSound(thisWeaponModel);
-        animator.SetTrigger("RELOAD"); // trigger the reload animation
+
+        if (isADS) 
+        {
+            // trigger the reload animation (ADS)
+        }
+        else 
+        {
+            animator.SetTrigger("RELOAD"); // trigger the reload animation (hip fire)
+        }
         Invoke("ReloadCompleted", reloadTime);
     }
 
