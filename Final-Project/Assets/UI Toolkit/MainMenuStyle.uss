@@ -1,0 +1,16 @@
+.header {
+    font-size: 150px;
+    -unity-text-align: upper-center;
+    color: rgb(144, 15, 0);
+    background-color: rgba(0, 0, 0, 0);
+    -unity-text-outline-color: rgba(0, 0, 0, 0);
+    opacity: 1;
+}
+
+.button {
+    font-size: -6px;
+    margin-top: 121px;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+}
