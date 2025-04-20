@@ -9,6 +9,11 @@ public class WeaponManager : MonoBehaviour
     public List<GameObject> weaponSlots;
     public GameObject activeWeaponSlot;
 
+    // different types of Ammo (headers simply make it easier to read)
+    [Header("Ammo")]
+    public int totalRifleAmmo = 0;
+    public int totalPistolAmmo = 0;
+
   public void Start()
   {
     // set the first weapon slot as the active weapon slot
@@ -71,6 +76,18 @@ public class WeaponManager : MonoBehaviour
         weapon.animator.enabled = true;
     }
 
+    internal void PickupAmmo(AmmoBox ammo) {
+        // check the ammo type and add the ammo to the appropriate total ammo
+        switch (ammo.ammoType) {
+            case AmmoBox.AmmoType.PistolAmmo:
+                totalPistolAmmo += ammo.ammoAmount;
+                break;
+            case AmmoBox.AmmoType.RifleAmmo:
+                totalRifleAmmo += ammo.ammoAmount;
+                break;
+        }
+    }
+
     private void DropCurrentWeapon(GameObject pickedUpWeapon) {
         // ensure there is a weapon in the active weapon slot
         if (activeWeaponSlot.transform.childCount > 0) {
@@ -106,6 +123,29 @@ public class WeaponManager : MonoBehaviour
             Weapon newWeapon = activeWeaponSlot.transform.GetChild(0).gameObject.GetComponent<Weapon>();
             // this is now the active weapon, since we have switched to it
             newWeapon.isActiveWeapon = true; 
+        }
+    }
+
+    internal void DecreaseTotalAmmo(int bulletsToDecrease, Weapon.WeaponModel thisWeaponModel) {
+        switch (thisWeaponModel) {
+            case Weapon.WeaponModel.PistolM1911:
+                totalPistolAmmo -= bulletsToDecrease;
+                break;
+            case Weapon.WeaponModel.RifleM4_8:
+                totalRifleAmmo -= bulletsToDecrease;
+                break;
+        }
+    }
+
+    public int CheckAmmoLeftFor(Weapon.WeaponModel thisWeaponModel) {
+        // return the appropriate total ammo based on the passed in weapon model
+        switch (thisWeaponModel) {
+            case Weapon.WeaponModel.PistolM1911:
+                return totalPistolAmmo;
+            case Weapon.WeaponModel.RifleM4_8:
+                return totalRifleAmmo;
+            default:
+                return 0;
         }
     }
 }

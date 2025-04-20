@@ -41,7 +41,7 @@ public class HUDManager : MonoBehaviour
     if (activeWeapon) {
         // set the bullets left and total ammo accordinly
         magazineAmmoUI.text = $"{activeWeapon.bulletsLeft}";
-        totalAmmoUI.text = $"{activeWeapon.magazineSize}";
+        totalAmmoUI.text = $"{WeaponManager.Instance.CheckAmmoLeftFor(activeWeapon.thisWeaponModel)}";
 
         // set the ammo type sprite
         Weapon.WeaponModel model = activeWeapon.thisWeaponModel;

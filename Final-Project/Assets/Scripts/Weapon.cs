@@ -90,7 +90,7 @@ public class Weapon : MonoBehaviour
             }
 
             // Allow reloading only if weapon is not full on ammo and already reloading (manual reloading)
-            if (Input.GetKeyDown(KeyCode.R) && bulletsLeft < magazineSize && !isReloading) {
+            if (Input.GetKeyDown(KeyCode.R) && bulletsLeft < magazineSize && !isReloading && WeaponManager.Instance.CheckAmmoLeftFor(thisWeaponModel) > 0) {
                 Reload();
             }
             // automatic reloading
@@ -153,8 +153,15 @@ public class Weapon : MonoBehaviour
     }
 
     private void ReloadCompleted() {
-        bulletsLeft = magazineSize; // set the bullets left back to the magazine size
-        isReloading = false; // we are done reloading
+        if (WeaponManager.Instance.CheckAmmoLeftFor(thisWeaponModel) > magazineSize) {
+            bulletsLeft = magazineSize;
+            WeaponManager.Instance.DecreaseTotalAmmo(bulletsLeft, thisWeaponModel);
+        }
+        else {
+            bulletsLeft = WeaponManager.Instance.CheckAmmoLeftFor(thisWeaponModel);
+            WeaponManager.Instance.DecreaseTotalAmmo(bulletsLeft, thisWeaponModel);
+        }
+        isReloading = false;
     }
 
     private void ResetShot() {
