@@ -57,3 +57,6 @@ crashlytics-build.log
 
 # Ignore log files
 *.log
+
+# Ignore Big Land Files:
+ Final-Project/Assets/Prefabs/Land/*
