@@ -43,16 +43,15 @@ public class Enemy : MonoBehaviour
     }
   }
 
-  public void Update()
+  private void OnDrawGizmos()
   {
-    // is the enemy moving? Play the walking animation (not good practice!)
-    if (navAgent.velocity.magnitude > 0.1f)
-    {
-        animator.SetBool("isWalking", true);
-    }
-    else 
-    {
-      animator.SetBool("isWalking", false);
-    }
+    Gizmos.color = Color.red;
+    Gizmos.DrawWireSphere(transform.position, 2.5f); // Attacking // Stop Attacking
+
+    Gizmos.color = Color.blue;
+    Gizmos.DrawWireSphere(transform.position, 18f); // Detection (Start Chasing)
+
+    Gizmos.color = Color.green;
+    Gizmos.DrawWireSphere(transform.position, 21f); // Stop Chasing
   }
 }
