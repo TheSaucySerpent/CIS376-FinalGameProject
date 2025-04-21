@@ -8,6 +8,9 @@ public class Enemy : MonoBehaviour
 
     private NavMeshAgent navAgent; // reference to the NavMeshAgent component
 
+    // boolean or checking if the enemy is dead
+    internal bool isDead;
+
   private void Start()
   {
     animator = GetComponent<Animator>(); // get a reference to the Animator component
@@ -22,6 +25,9 @@ public class Enemy : MonoBehaviour
     // check if the enemy is dead
     if (HP <= 0)
     {
+      // set the isDead boolean to true
+      isDead = true;
+
       int randomValue = Random.Range(0, 2); // randomValue = 0 or 1
 
       // pick a random death animation
@@ -49,9 +55,13 @@ public class Enemy : MonoBehaviour
     Gizmos.DrawWireSphere(transform.position, 2.5f); // Attacking // Stop Attacking
 
     Gizmos.color = Color.blue;
-    Gizmos.DrawWireSphere(transform.position, 18f); // Detection (Start Chasing)
+    // Gizmos.DrawWireSphere(transform.position, 18f); // Detection (Start Chasing)
+
+    // want Zombies to always chase player
+    Gizmos.DrawWireSphere(transform.position, 100f); // Detection (Start Chasing)
 
     Gizmos.color = Color.green;
-    Gizmos.DrawWireSphere(transform.position, 21f); // Stop Chasing
+    // Gizmos.DrawWireSphere(transform.position, 21f); // Stop Chasing
+    Gizmos.DrawWireSphere(transform.position, 101f); // Stop Chasing 
   }
 }
