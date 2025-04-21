@@ -13,6 +13,13 @@ public class SoundManager : MonoBehaviour
     public AudioClip M4_8Reload;
     public AudioClip emptyMagazine;
 
+    // audio channel for the player
+    public AudioSource playerChannel;
+    public AudioClip playerHurt;
+    public AudioClip playerDeath;
+
+    public AudioClip gameOverMusic;
+
     private void Awake() {
         // only want one instance at a time -- singleton design pattern
         if (Instance != null && Instance != this) {
