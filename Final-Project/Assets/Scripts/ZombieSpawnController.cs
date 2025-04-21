@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class ZombieSpawnController : MonoBehaviour
 {
+    public List<Transform> zombieSpawners; // list of possible zombie spawners
+
     public int initialZombiesPerWave = 5; // initial zombies per wave
     public int currentZombiesPerWave; // the current zombies per wave (increases each round)
 
@@ -30,6 +32,13 @@ public class ZombieSpawnController : MonoBehaviour
 
   private void Start()
   {
+    // Get a list of all the zombie spawners
+    zombieSpawners = new List<Transform>();
+    foreach (GameObject go in GameObject.FindGameObjectsWithTag("ZombieSpawner"))
+    {
+        zombieSpawners.Add(go.transform);
+    }
+
     currentZombiesPerWave = initialZombiesPerWave; // set the initial zombies per wave
     currentWaveUI.text = currentWave.ToString(); // set the current wave to 1 for the UI
     StartNextWave(); // start the first wave
@@ -48,8 +57,16 @@ public class ZombieSpawnController : MonoBehaviour
     for (int i=0; i<currentZombiesPerWave; i++)
     {
       // generate a random offset from the spawner
+    //   Vector3 spawnOffset = new Vector3(Random.Range(-1.0f, 1.0f), 0f, Random.Range(-1.0f, 1.0f));
+    //   Vector3 spawnPosition = transform.position + spawnOffset; // apply the offset to the spawner's position
+
+      // Pick a random spawner from the list
+      Transform chosenSpawner = zombieSpawners[Random.Range(0, zombieSpawners.Count)];
+
+      // Generate a small offset to avoid stacking zombies exactly on each other
       Vector3 spawnOffset = new Vector3(Random.Range(-1.0f, 1.0f), 0f, Random.Range(-1.0f, 1.0f));
-      Vector3 spawnPosition = transform.position + spawnOffset; // apply the offset to the spawner's position
+      Vector3 spawnPosition = chosenSpawner.position + spawnOffset;
+
 
       // instantiate the zombie prefab at the spawn position
       var zombie = Instantiate(zombiePrefab, spawnPosition, Quaternion.identity);
